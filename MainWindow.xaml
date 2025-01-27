@@ -20,20 +20,26 @@
 
         <StackPanel Grid.Column="1">
             <Label Content="Sorszám" />
-            <TextBox x:Name="tbxSorszam" Margin="10" IsReadOnly="True"/>
+            <TextBox x:Name="tbxSorszam" Margin="5" IsReadOnly="True"/>
 
             <Label Content="Név" />
-            <TextBox x:Name="tbxNev" Margin="10" IsReadOnly="True"/>
+            <TextBox x:Name="tbxNev" Margin="5" IsReadOnly="True"/>
 
             <Label Content="1. feladat" />
-            <TextBox x:Name="tbx1feladat" Margin="10" IsReadOnly="True"/>
+            <TextBox x:Name="tbx1feladat" Margin="5" IsReadOnly="True"/>
+
+            <Image x:Name="imgMedall1" Margin="5" Width="30" Height="30" HorizontalAlignment="Left" />
 
             <Label Content="2. feladat" />
-            <TextBox x:Name="tbx2feladat" Margin="10" IsReadOnly="True"/>
+            <TextBox x:Name="tbx2feladat" Margin="5" IsReadOnly="True"/>
 
+            <Image x:Name="imgMedall2" Margin="5" Width="30" Height="30" HorizontalAlignment="Left" />
+            
             <Label Content="3. feladat" />
-            <TextBox x:Name="tbx3feladat" Margin="10" IsReadOnly="True"/>
+            <TextBox x:Name="tbx3feladat" Margin="5" IsReadOnly="True"/>
 
+            <Image x:Name="imgMedall3" Margin="5" Width="30" Height="30" HorizontalAlignment="Left" />
+            
 
         </StackPanel>
         

@@ -27,6 +27,7 @@ namespace eredmenyek
 
             lbxVersenyzok.ItemsSource = versenyzok;
             //lbxVersenyzok.DisplayMemberPath = "Nev"; 
+            EremInit();
         }
 
         public void Feltolt(string tartomany)
@@ -53,13 +54,37 @@ namespace eredmenyek
             }
         }
 
+        private static int PontszamHely(int helyezes, int feladat)
+        {
+            int eredmeny = -1;
+            switch(feladat)
+            {
+                case 1:
+                    int max = versenyzok[0].Feladat1;
+                    foreach(Versenyzo v in versenyzok)
+                    {
+                        if (v.Feladat1 > max)
+                        {
+                            max = v.Feladat1;
+                        }
+                    }
+                    eredmeny = max;
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+            }
+            return eredmeny;
+        }
+
         private void lbxVersenyzok_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
             if (lbxVersenyzok.SelectedItem != null)
             {
                 int index = 0;
-                while(index < versenyzok.Count && versenyzok[index].Nev != lbxVersenyzok.SelectedItem.ToString())
+                while (index < versenyzok.Count && versenyzok[index].Nev != lbxVersenyzok.SelectedItem.ToString())
                 {
                     index++;
                 }
@@ -68,7 +93,13 @@ namespace eredmenyek
                 tbx1feladat.Text = versenyzok[index].Feladat1.ToString();
                 tbx2feladat.Text = versenyzok[index].Feladat2.ToString();
                 tbx3feladat.Text = versenyzok[index].Feladat3.ToString();
+                int elsoPontArany = PontszamHely(1, 1);
+                if (elsoPontArany == versenyzok[index].Feladat1)
+                {
+                    imgMedall1.Source = new BitmapImage(new Uri("Images/gold.jpg", UriKind.Relative));
+                }
             }
+                
 
 
             //if (lbxVersenyzok.SelectedItem != null)
@@ -83,6 +114,13 @@ namespace eredmenyek
             //{
             //    MessageBox.Show("Nincs kiválasztott versenyző!");
             //}
+        }
+
+        public void EremInit()
+        {
+            imgMedall1.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
+            imgMedall2.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
+            imgMedall3.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
         }
     }
 }
