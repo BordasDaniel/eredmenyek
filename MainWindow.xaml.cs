@@ -55,11 +55,34 @@ namespace eredmenyek
 
         private void lbxVersenyzok_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            tbxSorszam.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Sorszaszam.ToString();
-            tbxNev.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Nev;
-            tbx1feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat1.ToString();
-            tbx2feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat2.ToString();
-            tbx3feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat3.ToString();
+
+            if (lbxVersenyzok.SelectedItem != null)
+            {
+                int index = 0;
+                while(index < versenyzok.Count && versenyzok[index].Nev != lbxVersenyzok.SelectedItem.ToString())
+                {
+                    index++;
+                }
+                tbxSorszam.Text = versenyzok[index].Sorszaszam.ToString();
+                tbxNev.Text = versenyzok[index].Nev;
+                tbx1feladat.Text = versenyzok[index].Feladat1.ToString();
+                tbx2feladat.Text = versenyzok[index].Feladat2.ToString();
+                tbx3feladat.Text = versenyzok[index].Feladat3.ToString();
+            }
+
+
+            //if (lbxVersenyzok.SelectedItem != null)
+            //{
+            //    tbxSorszam.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Sorszaszam.ToString();
+            //    tbxNev.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Nev;
+            //    tbx1feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat1.ToString();
+            //    tbx2feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat2.ToString();
+            //    tbx3feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat3.ToString();
+            //}
+            //else
+            //{
+            //    MessageBox.Show("Nincs kiválasztott versenyző!");
+            //}
         }
     }
 }
