@@ -18,6 +18,8 @@ namespace eredmenyek
     public partial class MainWindow : Window
     {
         static List<Versenyzo> versenyzok = new();
+        static int[][] PontAranyok;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -27,7 +29,9 @@ namespace eredmenyek
 
             lbxVersenyzok.ItemsSource = versenyzok;
             //lbxVersenyzok.DisplayMemberPath = "Nev"; 
-            EremInit();
+            // EremInit();
+            PontAranyok = PontszamHely();
+
         }
 
         public void Feltolt(string tartomany)
@@ -54,28 +58,64 @@ namespace eredmenyek
             }
         }
 
-        private static int PontszamHely(int helyezes, int feladat)
+        private static int[][] PontszamHely()
         {
-            int eredmeny = -1;
-            switch(feladat)
+            int[][] pontAranyok =
+            [
+                new int[3], // Az első feladat top 3 helyezettjeinek pontszámai
+                new int[3], // A második feladat top 3 helyezettjeinek pontszámai
+                new int[3]  // A harmadik feladat top 3 helyezettjeinek pontszámai
+            ];
+
+           
+            List<int> FeladatPontszamai = new();
+
+            // Első feladat 
+            foreach(Versenyzo v in versenyzok)
             {
-                case 1:
-                    int max = versenyzok[0].Feladat1;
-                    foreach(Versenyzo v in versenyzok)
-                    {
-                        if (v.Feladat1 > max)
-                        {
-                            max = v.Feladat1;
-                        }
-                    }
-                    eredmeny = max;
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    break;
+                FeladatPontszamai.Add(v.Feladat1);
             }
-            return eredmeny;
+            FeladatPontszamai.Sort();
+            FeladatPontszamai.Reverse();
+
+            pontAranyok[0][0] = FeladatPontszamai[0];
+            pontAranyok[0][1] = FeladatPontszamai[1];
+            pontAranyok[0][2] = FeladatPontszamai[2];
+
+            FeladatPontszamai.Clear();
+
+
+            // Második feladat
+            foreach (Versenyzo v in versenyzok)
+            {
+                FeladatPontszamai.Add(v.Feladat2);
+            }
+
+            FeladatPontszamai.Sort();
+            FeladatPontszamai.Reverse();
+
+            pontAranyok[1][0] = FeladatPontszamai[0];
+            pontAranyok[1][1] = FeladatPontszamai[1];
+            pontAranyok[1][2] = FeladatPontszamai[2];
+
+            FeladatPontszamai.Clear();
+
+
+            // Harmadik feladat
+            foreach (Versenyzo v in versenyzok)
+            {
+                FeladatPontszamai.Add(v.Feladat3);
+            }
+
+            FeladatPontszamai.Sort();
+            FeladatPontszamai.Reverse();
+
+            pontAranyok[2][0] = FeladatPontszamai[0];
+            pontAranyok[2][1] = FeladatPontszamai[1];
+            pontAranyok[2][2] = FeladatPontszamai[2];
+
+
+            return pontAranyok;
         }
 
         private void lbxVersenyzok_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -93,34 +133,64 @@ namespace eredmenyek
                 tbx1feladat.Text = versenyzok[index].Feladat1.ToString();
                 tbx2feladat.Text = versenyzok[index].Feladat2.ToString();
                 tbx3feladat.Text = versenyzok[index].Feladat3.ToString();
-                int elsoPontArany = PontszamHely(1, 1);
-                if (elsoPontArany == versenyzok[index].Feladat1)
+
+
+                switch(versenyzok[index].Feladat1)
                 {
-                    imgMedall1.Source = new BitmapImage(new Uri("Images/gold.jpg", UriKind.Relative));
+                    case int n when n == PontAranyok[0][0]:
+                        imgMedall1.Source = new BitmapImage(new Uri("Images/gold.jpg", UriKind.Relative));
+                        break;
+                    case int n when n == PontAranyok[0][1]:
+                        imgMedall1.Source = new BitmapImage(new Uri("Images/silver.jpg", UriKind.Relative));
+                        break;
+                    case int n when n == PontAranyok[0][2]:
+                        imgMedall1.Source = new BitmapImage(new Uri("Images/bronze.jpg", UriKind.Relative));
+                        break;
+                    default:
+                        imgMedall1.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
+                       
+                        break;
                 }
-            }
-                
 
+                switch (versenyzok[index].Feladat2)
+                {
+                    case int n when n == PontAranyok[1][0]:
+                        imgMedall2.Source = new BitmapImage(new Uri("Images/gold.jpg", UriKind.Relative));
+                        break;
+                    case int n when n == PontAranyok[1][1]:
+                        imgMedall2.Source = new BitmapImage(new Uri("Images/silver.jpg", UriKind.Relative));
+                        break;
+                    case int n when n == PontAranyok[1][2]:
+                        imgMedall2.Source = new BitmapImage(new Uri("Images/bronze.jpg", UriKind.Relative));
+                        break;
+                    default:
+                        imgMedall2.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
+                        break;
+                }
 
-            //if (lbxVersenyzok.SelectedItem != null)
-            //{
-            //    tbxSorszam.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Sorszaszam.ToString();
-            //    tbxNev.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Nev;
-            //    tbx1feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat1.ToString();
-            //    tbx2feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat2.ToString();
-            //    tbx3feladat.Text = (lbxVersenyzok.SelectedItem as Versenyzo).Feladat3.ToString();
-            //}
-            //else
-            //{
-            //    MessageBox.Show("Nincs kiválasztott versenyző!");
-            //}
+                switch (versenyzok[index].Feladat3)
+                {
+                    case int n when n == PontAranyok[2][0]:
+                        imgMedall3.Source = new BitmapImage(new Uri("Images/gold.jpg", UriKind.Relative));
+                        break;
+                    case int n when n == PontAranyok[2][1]:
+                        imgMedall3.Source = new BitmapImage(new Uri("Images/silver.jpg", UriKind.Relative));
+                        break;
+                    case int n when n == PontAranyok[2][2]:
+                        imgMedall3.Source = new BitmapImage(new Uri("Images/bronze.jpg", UriKind.Relative));
+                        break;
+                    default:
+                        imgMedall3.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
+                        break;
+                }
+            }           
         }
 
         public void EremInit()
         {
-            imgMedall1.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
-            imgMedall2.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
-            imgMedall3.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
+           imgMedall1.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
+           imgMedall2.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
+           imgMedall3.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
         }
     }
 }
