@@ -9,6 +9,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Images\bronze.jpg" />
+    <None Remove="Images\empty.jpg" />
+    <None Remove="Images\gold.jpg" />
+    <None Remove="Images\silver.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Images\bronze.jpg" />
+    <Resource Include="Images\empty.jpg" />
+    <Resource Include="Images\gold.jpg" />
+    <Resource Include="Images\silver.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Eredmenyek.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
