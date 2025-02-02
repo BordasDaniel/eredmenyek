@@ -9,7 +9,7 @@ namespace eredmenyek
     class Versenyzo
     {
         // Olyan osztályt amiben csak propery-k vannak, rekordnak hívjuk.
-        public int Sorszaszam { get; set; }
+        public int Sorszam { get; set; }
         public string Nev { get; set; }
         public int Feladat1 { get; set; }
         public int Feladat2 { get; set; }
@@ -21,7 +21,7 @@ namespace eredmenyek
 
         public Versenyzo(int sorszaszam, string nev, int feladat1, int feladat2, int feladat3)
         {
-            Sorszaszam = sorszaszam;
+            Sorszam = sorszaszam;
             Nev = nev;
             Feladat1 = feladat1;
             Feladat2 = feladat2;

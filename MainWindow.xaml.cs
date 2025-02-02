@@ -29,7 +29,6 @@ namespace eredmenyek
 
             lbxVersenyzok.ItemsSource = versenyzok;
             //lbxVersenyzok.DisplayMemberPath = "Nev"; 
-            // EremInit();
             PontAranyok = PontszamHely();
 
         }
@@ -44,7 +43,7 @@ namespace eredmenyek
                     string[] adatok = sor.Split(';');
                     versenyzok.Add(new Versenyzo()
                     {
-                        Sorszaszam = int.Parse(adatok[0]),
+                        Sorszam = int.Parse(adatok[0]),
                         Nev = adatok[1],
                         Feladat1 = int.Parse(adatok[2]),
                         Feladat2 = int.Parse(adatok[3]),
@@ -60,62 +59,50 @@ namespace eredmenyek
 
         private static int[][] PontszamHely()
         {
+            static int[][] MatrixFeltolt(int[][] pontAranyok)
+            {
+                int sor = 0;
+                List<int> FeladatPontszamai;
+
+                for (int j = 0; j < pontAranyok.Length; j++)
+                {
+                    FeladatPontszamai = [];
+                    foreach (Versenyzo v in versenyzok)
+                    {
+                        switch (j)
+                        {
+                            case 0:
+                                FeladatPontszamai.Add(v.Feladat1);
+                                break;
+                            case 1:
+                                FeladatPontszamai.Add(v.Feladat2);
+                                break;
+                            case 2:
+                                FeladatPontszamai.Add(v.Feladat3);
+                                break;
+                        }
+                    }
+                    FeladatPontszamai.Sort();
+                    FeladatPontszamai.Reverse();
+
+                    for (int i = 0; i < 3; i++)
+                    {
+                        pontAranyok[sor][i] = FeladatPontszamai[i];
+                    }
+                    sor++;
+                }
+
+                return pontAranyok;
+            }
+
             int[][] pontAranyok =
-            [
+            {
                 new int[3], // Az első feladat top 3 helyezettjeinek pontszámai
                 new int[3], // A második feladat top 3 helyezettjeinek pontszámai
                 new int[3]  // A harmadik feladat top 3 helyezettjeinek pontszámai
-            ];
+            };
 
-           
-            List<int> FeladatPontszamai = new();
-
-            // Első feladat 
-            foreach(Versenyzo v in versenyzok)
-            {
-                FeladatPontszamai.Add(v.Feladat1);
-            }
-            FeladatPontszamai.Sort();
-            FeladatPontszamai.Reverse();
-
-            pontAranyok[0][0] = FeladatPontszamai[0];
-            pontAranyok[0][1] = FeladatPontszamai[1];
-            pontAranyok[0][2] = FeladatPontszamai[2];
-
-            FeladatPontszamai.Clear();
-
-
-            // Második feladat
-            foreach (Versenyzo v in versenyzok)
-            {
-                FeladatPontszamai.Add(v.Feladat2);
-            }
-
-            FeladatPontszamai.Sort();
-            FeladatPontszamai.Reverse();
-
-            pontAranyok[1][0] = FeladatPontszamai[0];
-            pontAranyok[1][1] = FeladatPontszamai[1];
-            pontAranyok[1][2] = FeladatPontszamai[2];
-
-            FeladatPontszamai.Clear();
-
-
-            // Harmadik feladat
-            foreach (Versenyzo v in versenyzok)
-            {
-                FeladatPontszamai.Add(v.Feladat3);
-            }
-
-            FeladatPontszamai.Sort();
-            FeladatPontszamai.Reverse();
-
-            pontAranyok[2][0] = FeladatPontszamai[0];
-            pontAranyok[2][1] = FeladatPontszamai[1];
-            pontAranyok[2][2] = FeladatPontszamai[2];
-
-
-            return pontAranyok;
+            return MatrixFeltolt(pontAranyok);
         }
 
         private void lbxVersenyzok_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -128,12 +115,11 @@ namespace eredmenyek
                 {
                     index++;
                 }
-                tbxSorszam.Text = versenyzok[index].Sorszaszam.ToString();
+                tbxSorszam.Text = versenyzok[index].Sorszam.ToString();
                 tbxNev.Text = versenyzok[index].Nev;
                 tbx1feladat.Text = versenyzok[index].Feladat1.ToString();
                 tbx2feladat.Text = versenyzok[index].Feladat2.ToString();
                 tbx3feladat.Text = versenyzok[index].Feladat3.ToString();
-
 
                 switch(versenyzok[index].Feladat1)
                 {
@@ -184,13 +170,6 @@ namespace eredmenyek
                         break;
                 }
             }           
-        }
-
-        public void EremInit()
-        {
-           imgMedall1.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
-           imgMedall2.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
-           imgMedall3.Source = new BitmapImage(new Uri("Images/empty.jpg", UriKind.Relative));
         }
     }
 }
